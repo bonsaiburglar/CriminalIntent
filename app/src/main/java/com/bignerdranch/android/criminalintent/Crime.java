@@ -40,7 +40,7 @@ public class Crime {
         return mSolved;
     }
 
-    public void setSolved(boolean solved) {
-        mSolved = solved;
-    }
+    public void setSolved(boolean solved) { mSolved = solved; }
+
+
 }

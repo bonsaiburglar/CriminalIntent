@@ -22,8 +22,6 @@ import java.util.List;
 
 public class CrimeListFragment extends Fragment {
 
-    private static final String TAG = "CrimeListFragment";
-
     private static final String SAVED_SUBTITLE_VISIBLE = "subtitle";
 
     private RecyclerView mCrimeRecyclerView;

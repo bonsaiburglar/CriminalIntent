@@ -1,10 +1,12 @@
 package com.bignerdranch.android.criminalintent;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -61,8 +63,27 @@ public class CrimeFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.crime_fragment_delete:
-                CrimeLab.get(getActivity()).deleteCrime(mCrime);
-                getActivity().finish();
+
+                // Extra extra challenge: Using a dialog to confirm deletion
+                if (mCrime != null) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setTitle("Delete Alert");
+                    builder.setMessage("Are you sure you want to delete this crime?");
+                    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            CrimeLab.get(getActivity()).deleteCrime(mCrime);
+                            getActivity().finish();
+                        }
+                    });
+                    builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+                    builder.show();
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

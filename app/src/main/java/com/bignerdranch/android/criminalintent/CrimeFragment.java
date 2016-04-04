@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -22,6 +23,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -215,6 +217,16 @@ public class CrimeFragment extends Fragment {
         mPhotoView = (ImageView) v.findViewById(R.id.crime_photo);
         updatePhotoView();
 
+        // Expected Challenge: Efficient Thumbnail
+        mPhotoView = (ImageView) v.findViewById(R.id.crime_photo);
+        mPhotoView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                updatePhotoView();
+                mPhotoView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+            }
+        });
+
         // Expected Challenge: Detail Display
         mPhotoView = (ImageView) v.findViewById(R.id.crime_photo);
         mPhotoView.setOnClickListener(new View.OnClickListener() {
@@ -295,11 +307,13 @@ public class CrimeFragment extends Fragment {
 
     private void updatePhotoView() {
         if (mPhotoFile == null || !mPhotoFile.exists()) {
-            mPhotoView.setImageDrawable(null);
+            mPhotoView.setImageBitmap(null);
+            mPhotoView.setClickable(false);
         } else {
-            Bitmap bitmap = PictureUtils.getScaledBitmap(
-                    mPhotoFile.getPath(), getActivity());
+            Bitmap bitmap = PictureUtils.getScaledBitmap(mPhotoFile.getPath(), mPhotoView.getWidth(), mPhotoView.getHeight());
             mPhotoView.setImageBitmap(bitmap);
+            mPhotoView.setClickable(true);
         }
-    }
+     }
+
 }

@@ -39,6 +39,7 @@ public class CrimeFragment extends Fragment {
 
     private static final String ARG_CRIME_ID = "crime_id";
     private static final String DIALOG_DATE = "DialogDate";
+    private static final String IMAGE_DIALOG = "ImageDialog";
 
     private static final int REQUEST_DATE = 0;
     private static final int REQUEST_CONTACT = 1;
@@ -213,6 +214,16 @@ public class CrimeFragment extends Fragment {
 
         mPhotoView = (ImageView) v.findViewById(R.id.crime_photo);
         updatePhotoView();
+
+        // Expected Challenge: Detail Display
+        mPhotoView = (ImageView) v.findViewById(R.id.crime_photo);
+        mPhotoView.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                FragmentManager manager = getFragmentManager();
+                ImageFragment imageDialog = ImageFragment.newInstance(mPhotoFile.getPath());
+                imageDialog.show(manager, IMAGE_DIALOG);
+            }
+        });
 
         return v;
     }
